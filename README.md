@@ -12,5 +12,8 @@ Complete step by step guide for proxmox 5.0 https://forum.proxmox.com/threads/tu
 
 Tested to work in
   HP DL380 Generation 6
+  
   HP ML110 Generation 9
+  
   HP ML310 Generation 8
+  
