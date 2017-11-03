@@ -1,0 +1,13 @@
+--- ubuntu-zesty/drivers/iommu/intel-iommu.c
++++ ubuntu-zesty/drivers/iommu/intel-iommu_new.c
+@@ -5024,8 +5024,8 @@
+        u8 bus, devfn;
+ 
+        if (device_is_rmrr_locked(dev)) {
+-               dev_warn(dev, "Device is ineligible for IOMMU domain attach due to platform RMRR requirement.  Contact your platform vendor.\n");
+-               return -EPERM;
++               dev_warn(dev, "Device was ineligible for IOMMU domain attach due to platform RMRR requirement. FIXED.\n");
++               //return -EPERM;
+        }
+ 
+        /* normally dev is not mapped */
