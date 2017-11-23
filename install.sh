@@ -1,6 +1,6 @@
 #!/bin/bash
 # PVE Kernel Patcher
-CURRENT_DIR=$(pwd)
+REPO_DIR=$(pwd)
 SOURCES_DIR=/usr/src/
 
 mkdir deb
@@ -16,25 +16,39 @@ git clone git://git.proxmox.com/git/pve-kernel.git
 cd pve-kernel
 
 # Find the Version
+
+CURRENT_PVE=$(pveversion | cut -d "/" -f2 | cut -d "-" -f1)
+CURRENT_KERNEL=$(uname -a | cut -d " " -f3 | cut -d '-' -f1)
+
 PVE_VERSION=$(cat Makefile | grep "RELEASE="| cut -d "=" -f2)
 KERNEL_VERSION=$(cat Makefile | grep KERNEL_SRC=| cut -d "=" -f2)
 
-if [[ $PVE_VERSION == 4.4 ]];then
-    echo "TODO:PVE 4.4"
-elif [[ $PVE_VERSION == 5.0 ]];then
-    # In pve5.0 we need to copy our patch and make a patch to the Makefile
-    echo "TODO:PVE 5.0"
-elif [[ $PVE_VERSION == 5.1 ]];then
+if [[ $PVE_VERSION == 5.0 ]];then
+    # Checking out 5.0 kernel version
+    git checkout pve-kernel-4.10
+    # Patching the makefile
+    cp $REPO_DIR/patches/Makefile.patch .
+    patch -p1 < Makefile.patch
+    # Copying the rmrr remove patch
+    cp $REPO_DIR/patches/0007-rmrr-patch-proxmox.5.0.patch .
+
+elif [[ $PVE_VERSION == 5.1 && $KERNEL_VERSION == "ubuntu-artful" ]];then
+    echo "Supported Version: Copying the patch files"
     # If pve 5.1 we don't need to patch the makefile, just copy our .patch file
-    cp CURRENT_DIR/patches/007-rmrr-patch-proxmox.5.1.patch patches/kernel/
+    cp $REPO_DIR/patches/0007-rmrr-patch-proxmox.5.1.patch patches/kernel/
+else
+    echo "Unsupported Version $PVE_VERSION"
+    exit
 fi
 
+
 #Build the kernel
+echo "Building the kernel, go grab a coffee it will take a long time"
 make
 
 
 # Post Build Stuff
-mv *.deb $CURRENT_DIR/deb/
+mv *.deb $REPO_DIR/deb/
 
 
 # Post compile clean up
