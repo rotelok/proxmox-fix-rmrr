@@ -1,0 +1,14 @@
+--- ubuntu-artful/drivers/iommu/intel-iommu.c.orig
++++ ubuntu-artful/drivers/iommu/intel-iommu.c
+@@ -5054,11 +5054,6 @@
+        int addr_width;
+        u8 bus, devfn;
+
+-       if (device_is_rmrr_locked(dev)) {
+-               dev_warn(dev, "Device is ineligible for IOMMU domain attach due to platform RMRR requirement.  Contact your platform vendor.\n");
+-               return -EPERM;
+-       }
+-
+        /* normally dev is not mapped */
+        if (unlikely(domain_context_mapped(dev))) {
+                struct dmar_domain *old_domain;
