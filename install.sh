@@ -61,7 +61,7 @@ rm -rf pve-kernel
 
 # Post Install Stuff
 VFIO_CONF_FILE="/etc/modprobe.d/kvm-vfio.conf"
-if [[ -w ${VFIO_CONF_FILE} ]];then
+if [ ! -w ${VFIO_CONF_FILE} ];then
     echo "# Enable unsafe interrupts
 # Disable msrs to fix some problems with NVIDIA cards in windows
 options vfio_iommu_type1 allow_unsafe_interrupts=1
