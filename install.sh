@@ -78,12 +78,14 @@ options vfio-pci ids=10de:0ffd,10de:0e1b
 
 
 # Loading the vfio modules during boot
-echo "
-#vfio modules
-pci_stub
-vfio
-vfio_iommu_type1
-vfio_pci
-vfio_virqfd
-" >> /etc/modules
+MODULES_FILE="/etc/modules"
+MODULES_LIST='pci_stub vfio vfio_iommu_type1 vfio_pci vfio_virqfd'
+for I in ${MODULES_LIST}
+do
+    egrep "${I}$" ${MODULES_FILE} -q
+        if [[ $? == 1 ]];then
+        echo ${I} >> ${MODULES_FILE}
+
+    fi
+done
 
