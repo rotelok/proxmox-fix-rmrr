@@ -23,19 +23,10 @@ CURRENT_KERNEL=$(uname -a | cut -d " " -f3 | cut -d '-' -f1)
 PVE_VERSION=$(cat Makefile | grep "RELEASE="| cut -d "=" -f2)
 KERNEL_VERSION=$(cat Makefile | grep KERNEL_SRC=| cut -d "=" -f2)
 
-if [[ ${PVE_VERSION} == 5.0 ]];then
-    # Checking out 5.0 kernel version
-    git checkout pve-kernel-4.10
-    # Patching the makefile
-    cp ${REPO_DIR}/patches/Makefile.patch .
-    patch -p1 < Makefile.patch
-    # Copying the rmrr remove patch
-    cp ${REPO_DIR}/patches/0007-rmrr-patch-proxmox.5.0.patch .
-
-elif [[ ${PVE_VERSION} == 5.1 && ${KERNEL_VERSION} == "ubuntu-artful" ]];then
+if [[ ${PVE_VERSION} == 5.1 && ${KERNEL_VERSION} == "ubuntu-artful" ]];then
     echo "Supported Version: Copying the patch files"
     # If pve 5.1 we don't need to patch the makefile, just copy our .patch file
-    cp ${REPO_DIR}/patches/0007-rmrr-patch-proxmox.5.1.patch patches/kernel/
+    cp ${REPO_DIR}/patches/0030-rmrr-patch-proxmox.5.1.patch patches/kernel/
 else
     echo "Unsupported Version $PVE_VERSION"
     exit

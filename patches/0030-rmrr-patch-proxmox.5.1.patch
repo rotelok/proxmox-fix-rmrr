@@ -1,0 +1,13 @@
+--- a/drivers/iommu/intel-iommu.c       2018-03-19 00:50:11.718625918 -030007
++++ b/drivers/iommu/intel-iommu.c       2018-03-19 00:58:54.780784284 -0300
+@@ -5055,8 +5055,8 @@
+        u8 bus, devfn;
+
+        if (device_is_rmrr_locked(dev)) {
+-               dev_warn(dev, "Device is ineligible for IOMMU domain attach due to platform RMRR requirement.  Contact your platform vendor.\n");
+-               return -EPERM;
++               dev_warn(dev, "Device was ineligible for IOMMU domain attach due to platform RMRR requirement.  Patch is in effect.\n");
++               //return -EPERM;
+        }
+
+        /* normally dev is not mapped */
